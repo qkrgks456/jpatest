@@ -2,8 +2,8 @@ package com.example.jpatest.domain.item;
 
 import com.example.jpatest.domain.Category;
 import com.example.jpatest.exception.NotEnoughStockException;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +14,9 @@ import java.util.List;
 @Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 상속 관계에서의 전략 싱글테이블 전략 상속 받은애들 모두 테이블 하나에
 @DiscriminatorColumn(name = "dtype")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@SuperBuilder
 public abstract class Item {
 
     @Id

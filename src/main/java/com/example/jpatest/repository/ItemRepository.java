@@ -16,7 +16,7 @@ public class ItemRepository {
         if (item.getId() == null) {
             entityManager.persist(item);
         } else {
-            entityManager.merge(item); // 우선은 update 갬성이라고 이해 추후에 보자
+            entityManager.merge(item); // 이거 쓰지 마세요 수정할때 set 안하면 null로 그냥 업데이트 됩니다 모든 컬럼을 업데이트하기 때문에 위험
         }
     }
 
