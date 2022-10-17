@@ -73,10 +73,11 @@ class OrderServiceTest {
     }
 
     private Book getBook(String name, int price, int quantity) {
-        Book book = new Book();
-        book.setName(name);
-        book.setPrice(price);
-        book.setStockQuantity(quantity);
+        Book book = Book.builder()
+                .name(name)
+                .price(price)
+                .stockQuantity(quantity)
+                .build();
         entityManager.persist(book);
         return book;
     }

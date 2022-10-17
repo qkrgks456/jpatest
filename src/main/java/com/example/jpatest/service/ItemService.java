@@ -23,7 +23,7 @@ public class ItemService {
 
     @Transactional
     public void updateItem(BookForm param) {
-        // 위에 방법대로 merge 하지말고 다 업데이트 되니까
+        // merge 하지말고 다 업데이트 되니까
         // 이런식으로 dirty checking(변경감지)해서 필요한 컬럼만 업데이트하자
         // save 필요없다 트랜잭션 커밋되면 flush()하고 변경감지한거 다 찾아서 업데이트 해준다
         Book book = (Book) itemRepository.findOne(param.getId());
