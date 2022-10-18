@@ -33,7 +33,7 @@ public class MemberController {
             return "/members/createMemberForm";
         }
         Address address = memberForm.getAddress();
-        Member member = new Member();
+        Member member = new Member(memberForm.getName());
         member.setUsername(memberForm.getName());
         member.setAddress(address);
 
@@ -46,7 +46,6 @@ public class MemberController {
         model.addAttribute("members", memberService.memberList());
         return "/members/memberList";
     }
-
 
 
 }

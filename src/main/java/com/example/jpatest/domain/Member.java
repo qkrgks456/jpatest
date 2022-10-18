@@ -1,6 +1,8 @@
 package com.example.jpatest.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member {
 
     @Id
@@ -24,4 +27,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member") // 연관관계의 주인은 외래키가 있는 Order 테이블 해당 필드에 매핑되었다고 명시해준다.
     private List<Order> orders = new ArrayList<>();
+
+    public Member(String username) {
+        this.username = username;
+    }
 }

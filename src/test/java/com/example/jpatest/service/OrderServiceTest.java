@@ -72,6 +72,7 @@ class OrderServiceTest {
 
     }
 
+
     private Book getBook(String name, int price, int quantity) {
         Book book = Book.builder()
                 .name(name)
@@ -83,7 +84,7 @@ class OrderServiceTest {
     }
 
     private Member getMember() {
-        Member member = new Member();
+        Member member = new Member("test");
         member.setUsername("회원1");
         member.setAddress(new Address("서울", "경기", "123-123"));
         entityManager.persist(member);
