@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Member {
     @Column(name = "member_id")
     private long id;
 
-    private String username;
+    private String name;
 
     @Embedded
     private Address address;
@@ -28,7 +29,7 @@ public class Member {
     @OneToMany(mappedBy = "member") // 연관관계의 주인은 외래키가 있는 Order 테이블 해당 필드에 매핑되었다고 명시해준다.
     private List<Order> orders = new ArrayList<>();
 
-    public Member(String username) {
-        this.username = username;
+    public Member(String name) {
+        this.name = name;
     }
 }

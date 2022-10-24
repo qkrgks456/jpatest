@@ -34,7 +34,7 @@ public class MemberController {
         }
         Address address = memberForm.getAddress();
         Member member = new Member(memberForm.getName());
-        member.setUsername(memberForm.getName());
+        member.setName(memberForm.getName());
         member.setAddress(address);
 
         memberService.join(member);

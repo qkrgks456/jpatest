@@ -25,7 +25,7 @@ public class MemberService {
 
     public void validMember(Member member) {
         // 문제 있으면 exception
-        List<Member> members = memberRepository.findByName(member.getUsername());
+        List<Member> members = memberRepository.findByName(member.getName());
         if (!members.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다");
         }
@@ -40,5 +40,11 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
     }
 }

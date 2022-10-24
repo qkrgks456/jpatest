@@ -34,7 +34,7 @@ public class MemberRepository {
 
     public List<Member> findByName(String name) {
         // jpql 파라미터 반영방법
-        return entityManager.createQuery("select m from Member m where m.username = :name", Member.class)
+        return entityManager.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name", name)
                 .getResultList();
     }

@@ -35,7 +35,7 @@ public class OrderService {
         delivery.setAddress(member.getAddress());
 
         // 주문상품 생성
-        OrderItem orederItem = OrderItem.createOrederItem(item, item.getPrice(), count);
+        OrderItem orederItem = OrderItem.createOrderItem(item, item.getPrice(), count);
         Order order = Order.createOrder(member, delivery, orederItem);
 
         // 원래 delivery도 save 하고 orderItem도 save 해야하는데 아래만 한줄이냐면

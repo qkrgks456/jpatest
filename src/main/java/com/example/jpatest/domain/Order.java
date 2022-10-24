@@ -43,7 +43,7 @@ public class Order {
     // Delivery를 100번 단일쿼리로 호출하게된다. -> 성능 저하 엄청 중요하므로 xxToOne 같은경우 지연로딩(LAZY)으로 설정하자
     // Order가 한건이고 한번에 Delivery도 같이 조회하고 싶다면 추후에 fetch join을 이용하면 된다고 한다.
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "delovery_id")
+    @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     private LocalDateTime orderDate; // Date 하면 어노테이션 사용해야 한다
