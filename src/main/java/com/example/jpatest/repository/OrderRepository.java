@@ -1,8 +1,8 @@
 package com.example.jpatest.repository;
 
 import com.example.jpatest.domain.Order;
+import com.example.jpatest.dto.OrderSimpleDto;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +27,7 @@ public class OrderRepository {
     public List<Order> findAll(OrderSearch orderSearch) {
         return entityManager.createQuery("select o from Order o join o.member m" +
                         " where o.status = :status" +
-                        " and m.username like :name", Order.class)
+                        " and m.name like :name", Order.class)
                 .setParameter("status", orderSearch.getOrderStatus())
                 .setParameter("name", orderSearch.getMemberName())
                 .setMaxResults(1000) // 최대 1000건
@@ -66,5 +66,11 @@ public class OrderRepository {
             query = query.setParameter("name", orderSearch.getMemberName());
         }
         return query.getResultList();
+    }
+
+    public List<Order> findAllwithMemberDelivery() {
+        // 우선순위는 LAZY 설정보다 페치 조인이 더 높음
+        return entityManager.createQuery("select o from Order o join fetch o.member join fetch o.delivery", Order.class)
+                .getResultList();
     }
 }
