@@ -53,8 +53,8 @@ public class initDB {
             Book book2 = createBook("SPRING2 BOOK", 20000);
             entityManager.persist(book2);
 
-            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 1);
-            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 20000, 2);
+            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 3);
+            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 20000, 4);
 
             Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);

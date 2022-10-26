@@ -25,6 +25,7 @@ public class OrderSimpleApiController {
     public List<Order> orderV1() {
         // 이렇게 하면 무한루프 탄다
         // JsonIgnore,hibernate모듈 등등 방법은 있으나 그냥 dto로 주면 복잡한거 다 사라짐
+        // V1 쓰지마셈
         return orderRepository.findAllByString(new OrderSearch());
     }
 

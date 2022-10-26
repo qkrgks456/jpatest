@@ -73,4 +73,13 @@ public class OrderRepository {
         return entityManager.createQuery("select o from Order o join fetch o.member join fetch o.delivery", Order.class)
                 .getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        // 이 정도만 복잡해져도 querydsl 씁시다
+        return entityManager.createQuery("select distinct o from Order o " +
+                "join fetch o.member m " +
+                "join fetch o.delivery d " +
+                "join fetch o.orderItems oi " +
+                "join fetch oi.item", Order.class).getResultList();
+    }
 }
