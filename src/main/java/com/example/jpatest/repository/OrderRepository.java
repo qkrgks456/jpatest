@@ -1,7 +1,6 @@
 package com.example.jpatest.repository;
 
 import com.example.jpatest.domain.Order;
-import com.example.jpatest.dto.OrderSimpleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -68,18 +67,33 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    public List<Order> findAllwithMemberDelivery(int offset, int limit) {
+        // 우선순위는 LAZY 설정보다 페치 조인이 더 높음
+        return entityManager.createQuery(
+                        "select o from Order o " +
+                                "join fetch o.member " +
+                                "join fetch o.delivery", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public List<Order> findAllwithMemberDelivery() {
         // 우선순위는 LAZY 설정보다 페치 조인이 더 높음
-        return entityManager.createQuery("select o from Order o join fetch o.member join fetch o.delivery", Order.class)
+        return entityManager.createQuery(
+                        "select o from Order o " +
+                                "join fetch o.member " +
+                                "join fetch o.delivery", Order.class)
                 .getResultList();
     }
 
     public List<Order> findAllWithItem() {
         // 이 정도만 복잡해져도 querydsl 씁시다
-        return entityManager.createQuery("select distinct o from Order o " +
-                "join fetch o.member m " +
-                "join fetch o.delivery d " +
-                "join fetch o.orderItems oi " +
-                "join fetch oi.item", Order.class).getResultList();
+        return entityManager.createQuery(
+                "select distinct o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d " +
+                        "join fetch o.orderItems oi " +
+                        "join fetch oi.item", Order.class).getResultList();
     }
 }

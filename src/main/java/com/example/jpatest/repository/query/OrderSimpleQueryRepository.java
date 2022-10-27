@@ -1,4 +1,4 @@
-package com.example.jpatest.repository;
+package com.example.jpatest.repository.query;
 
 import com.example.jpatest.dto.OrderSimpleDto;
 import lombok.RequiredArgsConstructor;
