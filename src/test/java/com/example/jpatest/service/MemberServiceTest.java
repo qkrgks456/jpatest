@@ -1,7 +1,7 @@
 package com.example.jpatest.service;
 
 import com.example.jpatest.domain.Member;
-import com.example.jpatest.repository.MemberRepository;
+import com.example.jpatest.repository.MemberOldRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
     @Autowired
-    MemberRepository memberRepository;
+    MemberOldRepository memberRepository;
     @Autowired
     EntityManager entityManager;
 

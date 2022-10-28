@@ -6,9 +6,10 @@ import com.example.jpatest.domain.Order;
 import com.example.jpatest.domain.OrderItem;
 import com.example.jpatest.domain.item.Item;
 import com.example.jpatest.repository.ItemRepository;
-import com.example.jpatest.repository.MemberRepository;
+import com.example.jpatest.repository.MemberOldRepository;
 import com.example.jpatest.repository.OrderRepository;
 import com.example.jpatest.repository.OrderSearch;
+import com.example.jpatest.repository.query.OrderQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,9 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
+    private final MemberOldRepository memberRepository;
     private final ItemRepository itemRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     // 주문
     @Transactional
@@ -59,6 +61,6 @@ public class OrderService {
 
     // 검색
     public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderRepository.findAllByString(orderSearch);
+        return orderQueryRepository.findAllBySearch(orderSearch);
     }
 }

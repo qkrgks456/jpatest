@@ -1,6 +1,7 @@
 package com.example.jpatest.service;
 
 import com.example.jpatest.domain.Member;
+import com.example.jpatest.repository.MemberOldRepository;
 import com.example.jpatest.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private final MemberOldRepository memberOldRepository;
     private final MemberRepository memberRepository;
 
     // 회원가입
@@ -39,12 +41,12 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get();
     }
 
     @Transactional
     public void update(Long id, String name) {
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findById(id).get();
         member.setName(name);
     }
 }

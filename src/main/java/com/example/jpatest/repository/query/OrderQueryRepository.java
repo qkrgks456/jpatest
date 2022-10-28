@@ -1,74 +1,40 @@
 package com.example.jpatest.repository.query;
 
-import com.example.jpatest.dto.OrderFlatDto;
-import com.example.jpatest.dto.OrderItemQueryDto;
-import com.example.jpatest.dto.OrderQueryDto;
+import com.example.jpatest.domain.Order;
+import com.example.jpatest.domain.OrderStatus;
+import com.example.jpatest.repository.OrderSearch;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import static com.example.jpatest.domain.QMember.member;
+import static com.example.jpatest.domain.QOrder.order;
 
 @Repository
 @RequiredArgsConstructor
 public class OrderQueryRepository {
-    private final EntityManager entityManager;
 
+    private final JPAQueryFactory queryFactory;
 
-    public List<OrderQueryDto> findOrderQueryDtos() {
-        List<OrderQueryDto> orders = findOrders();
-        orders.forEach(orderQueryDto -> {
-            List<OrderItemQueryDto> orderItems = findOrderItems(orderQueryDto.getOrderId()); // 쿼리 N번
-            orderQueryDto.setOrderItems(orderItems);
-        });
-        return orders;
+    public List<Order> findAllBySearch(OrderSearch orderSearch) {
+        return queryFactory.select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCond) {
+        return statusCond == null ? null : order.status.eq(statusCond);
     }
 
 
-    public List<OrderQueryDto> findAllByDtos_optimization() {
-        List<OrderQueryDto> orders = findOrders();
-
-        List<Long> orderIds = orders.stream()
-                .map(o -> o.getOrderId())
-                .collect(Collectors.toList());
-
-        List<OrderItemQueryDto> orderItems = entityManager.createQuery("select new com.example.jpatest.dto.OrderItemQueryDto(oi.order.id,i.name,oi.orderPrice,oi.count) " +
-                        "from OrderItem oi join oi.item i " +
-                        "where oi.order.id in :orderIds", OrderItemQueryDto.class)
-                .setParameter("orderIds", orderIds)
-                .getResultList();
-
-        Map<Long, List<OrderItemQueryDto>> orderItemMap =
-                orderItems.stream().collect(Collectors.groupingBy(orderItemQueryDto -> orderItemQueryDto.getOrderId()));
-
-        orders.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
-
-        return orders;
-    }
-
-    private List<OrderItemQueryDto> findOrderItems(Long orderId) {
-        return entityManager.createQuery("select new com.example.jpatest.dto.OrderItemQueryDto(oi.order.id,i.name,oi.orderPrice,oi.count) " +
-                        "from OrderItem oi join oi.item i " +
-                        "where oi.order.id = :orderId", OrderItemQueryDto.class)
-                .setParameter("orderId", orderId)
-                .getResultList();
-    }
-
-    private List<OrderQueryDto> findOrders() {
-        return entityManager.createQuery("select new com.example.jpatest.dto.OrderQueryDto(o.id,m.name,o.orderDate,o.status,m.address) " +
-                "from Order o " +
-                "join o.member m " +
-                "join o.delivery d", OrderQueryDto.class).getResultList();
-    }
-
-    public List<OrderFlatDto> findAllByDtos_flat() {
-        return entityManager.createQuery("select new com.example.jpatest.dto.OrderFlatDto(o.id,m.name,o.orderDate,o.status,m.address,i.name,i.price,oi.count) from Order o " +
-                        "join o.member m " +
-                        "join o.delivery d " +
-                        "join o.orderItems oi " +
-                        "join oi.item i", OrderFlatDto.class)
-                .getResultList();
+    private BooleanExpression nameLike(String nameCond) {
+        return StringUtils.hasText(nameCond) ? member.name.like(nameCond) : null;
     }
 }

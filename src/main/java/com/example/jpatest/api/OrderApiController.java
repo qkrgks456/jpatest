@@ -8,7 +8,7 @@ import com.example.jpatest.dto.OrderFlatDto;
 import com.example.jpatest.dto.OrderQueryDto;
 import com.example.jpatest.repository.OrderRepository;
 import com.example.jpatest.repository.OrderSearch;
-import com.example.jpatest.repository.query.OrderQueryRepository;
+import com.example.jpatest.repository.query.OrderQueryOldRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderApiController {
     private final OrderRepository orderRepository;
-    private final OrderQueryRepository orderQueryRepository;
+    private final OrderQueryOldRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
